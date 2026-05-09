@@ -1,3 +1,4 @@
+import { Sun, Moon } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 type ThemeMode = 'light' | 'dark' | 'auto'
@@ -75,7 +76,13 @@ export default function ThemeToggle() {
       title={label}
       className="rounded-full border border-[var(--chip-line)] bg-[var(--chip-bg)] px-3 py-1.5 text-sm font-semibold text-[var(--sea-ink)] shadow-[0_8px_22px_rgba(30,90,72,0.08)] transition hover:-translate-y-0.5"
     >
-      {mode === 'auto' ? 'Auto' : mode === 'dark' ? 'Dark' : 'Light'}
+      {mode === 'auto' ? (
+        'Auto'
+      ) : mode === 'dark' ? (
+        <Moon className="size-4" />
+      ) : (
+        <Sun className="size-4" />
+      )}
     </button>
   )
 }
