@@ -1,5 +1,5 @@
 import { NavLink } from '@/components/NavLink'
-import ThemeToggle from '@/components/ThemeToggle'
+import ThemeToggle from '@/components/theme-toggle'
 import { Input } from '@/components/ui/input'
 import {
   ChefHatIcon,
