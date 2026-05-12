@@ -1,4 +1,4 @@
-import { NavLink } from '@/components/NavLink'
+import { NavLink } from '@/components/nav-link'
 import ThemeToggle from '@/components/theme-toggle'
 import { Input } from '@/components/ui/input'
 import {
