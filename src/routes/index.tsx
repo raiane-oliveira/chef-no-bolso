@@ -24,7 +24,7 @@ export const Route = createFileRoute('/')({ component: App })
 
 function App() {
   return (
-    <main className="pt-5">
+    <main className="pt-5 relative after:block after:absolute after:top-0 after:left-0 after:right-0 after:h-[10vh] after:min-h-50 after:max-h-100 after:-z-10 after:bg-accent-foreground">
       <section className="page-wrap flex flex-col gap-5">
         <div className="w-full bg-white p-1 rounded-lg h-84">
           <img

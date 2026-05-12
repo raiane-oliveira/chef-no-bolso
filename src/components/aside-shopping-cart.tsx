@@ -83,7 +83,10 @@ export function AsideShoppingCart({
   return (
     <Card
       {...props}
-      className={cn('bg-transparent gap-0 p-0 overflow-hidden', className)}
+      className={cn(
+        'bg-transparent rounded-md gap-0 p-0 overflow-hidden',
+        className,
+      )}
     >
       <CardHeader className="bg-transparent block p-0">
         <Select value={value} onValueChange={setValue}>
