@@ -71,7 +71,7 @@ export function ProductCard({
         <img
           src={product.imageUrl}
           alt=""
-          className="relative rounded-sm z-20 aspect-[1/0.9] w-full object-cover brightness-60 grayscale dark:brightness-40"
+          className="relative rounded-sm z-20 aspect-[1/0.8] w-full object-cover brightness-60 grayscale dark:brightness-40"
         />
       </div>
       <CardHeader className="px-1.5">

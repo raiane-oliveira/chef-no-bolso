@@ -34,7 +34,7 @@ function App() {
         </div>
 
         <div className="flex justify-between gap-7">
-          <div className="flex gap-6">
+          <div className="flex ml-12 gap-6">
             <div className="p-1 shadow-md -translate-y-20 flex-1 shrink-0 h-40 rounded-lg aspect-square bg-white">
               <img
                 src="https://picsum.photos/400/400"
@@ -106,7 +106,7 @@ function App() {
               </SelectContent>
             </Select>
 
-            <div className="relative bg-card max-w-xs w-full">
+            <div className="relative overflow-hidden rounded-md bg-card max-w-xs w-full">
               <MagnifyingGlassIcon className="absolute size-4 left-3 top-1/2 -translate-y-1/2 text-(--sea-ink-soft)" />
               <Input
                 placeholder="Busque por um produto"
