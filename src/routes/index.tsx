@@ -126,7 +126,8 @@ function App() {
                 const product: Product = {
                   id: `product-${i}`,
                   name: `Produto ${i + 1}`,
-                  description: 'Descrição do produto',
+                  description:
+                    'lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                   price: (i + 1) * 10,
                   imageUrl: `https://picsum.photos/200/200?random=${i + 1}`,
                 }

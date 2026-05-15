@@ -34,32 +34,32 @@ export default function Footer() {
             </a>
 
             <a
-              href="https://github.com/raiane-oliveira"
+              href="https://github.com/volneygs"
               target="_blank"
               rel="noopener noreferrer"
               title=""
             >
               <Avatar>
                 <AvatarImage
-                  src="https://github.com/maxleiter.png"
-                  alt="@maxleiter"
+                  src="https://github.com/volneygs.png"
+                  alt="@volneygs"
                 />
-                <AvatarFallback>LR</AvatarFallback>
+                <AvatarFallback>VG</AvatarFallback>
               </Avatar>
             </a>
 
             <a
-              href="https://github.com/raiane-oliveira"
+              href="https://github.com/phlimadev"
               target="_blank"
               rel="noopener noreferrer"
               title=""
             >
               <Avatar>
                 <AvatarImage
-                  src="https://github.com/evilrabbit.png"
-                  alt="@evilrabbit"
+                  src="https://github.com/phlimadev.png"
+                  alt="@phlimadev"
                 />
-                <AvatarFallback>ER</AvatarFallback>
+                <AvatarFallback>PL</AvatarFallback>
               </Avatar>
             </a>
           </AvatarGroup>
