@@ -1,7 +1,7 @@
-import { NavLink } from '@/components/nav-link'
-import ThemeToggle from '@/components/theme-toggle'
-import { Input } from '@/components/ui/input'
-import { cn } from '@/lib/utils'
+import { NavLink } from '@/shared/ui/nav-link'
+import ThemeToggle from '@/widgets/theme-toggle'
+import { Input } from '@/shared/ui/input'
+import { cn } from '@/shared/lib/utils'
 import {
   ChefHatIcon,
   HouseIcon,

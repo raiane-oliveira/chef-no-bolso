@@ -1,8 +1,8 @@
-import { AsideShoppingCart } from '@/components/aside-shopping-cart'
-import { ProductCard } from '@/components/product-card'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+import { AsideShoppingCart } from '@/features/add-to-cart/ui/aside-shopping-cart'
+import { ProductCard } from '@/entities/product/ui/product-card'
+import { Button } from '@/shared/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
+import { Input } from '@/shared/ui/input'
 import {
   Select,
   SelectContent,
@@ -11,7 +11,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
+} from '@/shared/ui/select'
 import type { Product } from '@/shared/api/types'
 import {
   GiftIcon,
@@ -129,7 +129,7 @@ function App() {
                   description:
                     'lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
                   price: (i + 1) * 10,
-                  imageUrl: `https://picsum.photos/200/200?random=${i + 1}`,
+                  imageUrl: `https://picsum.photos/400/400?random=${i + 1}`,
                 }
 
                 return <ProductCard key={i} product={product} />
@@ -154,7 +154,7 @@ function App() {
                   description:
                     'lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at vestibulum nisi, et luctus sapien. Praesent nec turpis tortor. Sed eget dapibus felis, in pharetra ex. Nunc sed neque vitae nibh porta ornare vel vel justo. Fusce egestas, nibh id rhoncus egestas, dolor odio dapibus diam, ac ultrices nulla nulla eu nulla. Aenean euismod efficitur sem, nec cursus lorem accumsan in. Sed aliquam turpis et tellus imperdiet, at maximus nulla blandit. Nam finibus lorem risus, ut mollis lacus maximus id.',
                   price: (i + 1) * 10,
-                  imageUrl: `https://picsum.photos/200/200?random=${i + 1}`,
+                  imageUrl: `https://picsum.photos/400/400?random=${i + 1}`,
                 }
 
                 return (

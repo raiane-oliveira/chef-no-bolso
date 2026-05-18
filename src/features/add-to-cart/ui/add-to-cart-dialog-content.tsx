@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { Button } from './ui/button'
+import { Button } from '../../../shared/ui/button'
 import {
   DialogClose,
   DialogContent,
@@ -7,12 +7,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from './ui/dialog'
-import { Field, FieldDescription, FieldLabel } from './ui/field'
-import { Textarea } from './ui/textarea'
+} from '../../../shared/ui/dialog'
+import { Field, FieldDescription, FieldLabel } from '../../../shared/ui/field'
+import { Textarea } from '../../../shared/ui/textarea'
 import { useState } from 'react'
 import type { Product } from '@/shared/api/types'
-import { priceFormatter } from '@/lib/formatters'
+import { priceFormatter } from '@/shared/lib/formatters'
 
 interface AddToCartDialogContentProps {
   product: Product
@@ -32,15 +32,15 @@ export function AddToCartDialogContent({
   const priceFormatted = priceFormatter.format(product.price)
 
   return (
-    <DialogContent className="flex flex-col items-center overflow-hidden p-0 md:flex-row gap-4 sm:max-w-200 w-full max-h-160">
+    <DialogContent className="flex flex-col items-center overflow-hidden p-0 md:flex-row gap-4 sm:max-w-200 w-full max-h-158.5 h-full sm:min-h-100">
       <div className="relative p-4 overflow-hidden grid place-items-center md:w-80 lg:w-88 xl:w-96 md:min-h-52 h-full">
         <img
           src={product.imageUrl}
-          className="object-cover object-center w-full aspect-square rounded-xl"
+          className="object-cover shadow border border-muted object-center w-full aspect-square rounded-xl"
         />
       </div>
 
-      <div className="flex flex-col max-w-99.25 bg-muted w-full flex-1 border-l border-muted">
+      <div className="flex flex-col bg-muted flex-1 h-full border-l border-muted">
         <DialogHeader className="flex-row p-4 items-center justify-between">
           <span>Detalhes do pedido</span>
           <DialogClose className="cursor-pointer">

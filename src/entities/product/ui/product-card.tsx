@@ -5,12 +5,12 @@ import {
   CardHeader,
   CardTitle,
   type CardProps,
-} from '@/components/ui/card'
-import { priceFormatter } from '@/lib/formatters'
-import { cn } from '@/lib/utils'
+} from '@/shared/ui/card'
+import { priceFormatter } from '@/shared/lib/formatters'
+import { cn } from '@/shared/lib/utils'
 import type { Product } from '@/shared/api/types'
-import { Dialog, DialogTrigger } from './ui/dialog'
-import { AddToCartDialogContent } from './add-to-cart-dialog-content'
+import { Dialog, DialogTrigger } from '../../../shared/ui/dialog'
+import { AddToCartDialogContent } from '../../../features/add-to-cart/ui/add-to-cart-dialog-content'
 
 interface ProductCardProps extends CardProps {
   product: Product
@@ -54,11 +54,11 @@ export function ProductCard({
               </CardFooter>
             </div>
 
-            <div className="relative shrink-0">
+            <div className="relative rounded-sm overflow-hidden max-w-32 shrink-0">
               <img
                 src={product.imageUrl}
                 alt=""
-                className="relative rounded-sm z-20 max-w-32 h-full w-full object-cover brightness-60 grayscale dark:brightness-40"
+                className="relative z-20 group-hover:scale-105 h-full w-full group-hover:brightness-100 transition-all object-cover brightness-60"
               />
             </div>
           </Card>
@@ -81,12 +81,12 @@ export function ProductCard({
             className,
           )}
         >
-          <div className="relative">
+          <div className="relative overflow-hidden aspect-[1/0.8] rounded-md">
             {/* <div className="absolute inset-0 z-30 aspect-video bg-black/35" /> */}
             <img
               src={product.imageUrl}
               alt=""
-              className="relative rounded-sm z-20 aspect-[1/0.8] w-full object-cover brightness-60 grayscale dark:brightness-40"
+              className="relative z-20 h-full transition-all brightness-60 group-hover:brightness-100 group-hover:scale-105 w-full object-cover"
             />
           </div>
           <CardHeader className="px-1.5">

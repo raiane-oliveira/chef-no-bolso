@@ -5,10 +5,10 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import Footer from '../components/footer'
-import Header from '../components/header'
+import Footer from '../widgets/footer'
+import Header from '../widgets/header'
 
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
+import TanStackQueryDevtools from '../shared/config/tanstack-query/devtools'
 
 import appCss from '../styles.css?url'
 

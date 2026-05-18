@@ -4,7 +4,7 @@ import {
   CardFooter,
   CardHeader,
   type CardProps,
-} from '@/components/ui/card'
+} from '@/shared/ui/card'
 import {
   Select,
   SelectContent,
@@ -12,8 +12,8 @@ import {
   SelectItem,
   SelectLabel,
   SelectValue,
-} from '@/components/ui/select'
-import { cn } from '@/lib/utils'
+} from '@/shared/ui/select'
+import { cn } from '@/shared/lib/utils'
 import {
   HandbagSimpleIcon,
   MotorcycleIcon,
@@ -23,7 +23,7 @@ import {
 } from '@phosphor-icons/react'
 import { ChevronRight } from 'lucide-react'
 import { Select as SelectPrimitive } from 'radix-ui'
-import { Button } from './ui/button'
+import { Button } from '../../../shared/ui/button'
 import { useState, type ReactNode } from 'react'
 
 export interface AsideShoppingCartProps extends CardProps {}

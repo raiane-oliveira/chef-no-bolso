@@ -3,7 +3,7 @@ import {
   AvatarFallback,
   AvatarGroup,
   AvatarImage,
-} from '@/components/ui/avatar'
+} from '@/shared/ui/avatar'
 
 export default function Footer() {
   const year = new Date().getFullYear()
