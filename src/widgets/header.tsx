@@ -1,5 +1,4 @@
 import { NavLink } from '@/shared/ui/nav-link'
-import ThemeToggle from '@/widgets/theme-toggle'
 import { Input } from '@/shared/ui/input'
 import { cn } from '@/shared/lib/utils'
 import {
@@ -162,8 +161,6 @@ export default function Header() {
                   }}
                 </NavLink>
               )}
-
-              <ThemeToggle />
             </div>
           </div>
         </nav>
