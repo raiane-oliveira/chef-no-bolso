@@ -11,6 +11,7 @@ import { cn } from '@/shared/lib/utils'
 import type { Product } from '@/shared/api/types'
 import { Dialog, DialogTrigger } from '../../../shared/ui/dialog'
 import { AddToCartDialogContent } from '../../../features/add-to-cart/ui/add-to-cart-dialog-content'
+import { useState } from 'react'
 
 interface ProductCardProps extends CardProps {
   product: Product
@@ -23,9 +24,11 @@ export function ProductCard({
   orientation = 'vertical',
   ...props
 }: ProductCardProps) {
+  const [open, setOpen] = useState(false)
+
   if (orientation === 'horizontal') {
     return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="text-left group p-0 border-0 cursor-pointer rounded-md">
           <Card
             {...props}
@@ -64,7 +67,7 @@ export function ProductCard({
           </Card>
         </DialogTrigger>
 
-        <AddToCartDialogContent product={product} />
+        <AddToCartDialogContent product={product} onOpenChange={setOpen} />
       </Dialog>
     )
   }
@@ -72,7 +75,7 @@ export function ProductCard({
   const priceFormatted = priceFormatter.format(product.price)
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="text-left group p-0 border-0 cursor-pointer rounded-md">
         <Card
           {...props}
@@ -106,7 +109,7 @@ export function ProductCard({
         </Card>
       </DialogTrigger>
 
-      <AddToCartDialogContent product={product} />
+      <AddToCartDialogContent onOpenChange={setOpen} product={product} />
     </Dialog>
   )
 }

@@ -1,3 +1,5 @@
+import { priceFormatter } from '@/shared/lib/formatters'
+import { cn } from '@/shared/lib/utils'
 import {
   Card,
   CardContent,
@@ -5,6 +7,7 @@ import {
   CardHeader,
   type CardProps,
 } from '@/shared/ui/card'
+import { Dialog, DialogTrigger } from '@/shared/ui/dialog'
 import {
   Select,
   SelectContent,
@@ -13,7 +16,6 @@ import {
   SelectLabel,
   SelectValue,
 } from '@/shared/ui/select'
-import { cn } from '@/shared/lib/utils'
 import {
   HandbagSimpleIcon,
   MotorcycleIcon,
@@ -23,8 +25,11 @@ import {
 } from '@phosphor-icons/react'
 import { ChevronRight } from 'lucide-react'
 import { Select as SelectPrimitive } from 'radix-ui'
-import { Button } from '../../../shared/ui/button'
 import { useState, type ReactNode } from 'react'
+import { Button } from '../../../shared/ui/button'
+import { useShoppingCartContext } from '../model/shopping-cart-context'
+import { AddToCartDialogContent } from './add-to-cart-dialog-content'
+import { InputUpdateOrderCartAmount } from './input-update-order-cart-amount'
 
 export interface AsideShoppingCartProps extends CardProps {}
 
@@ -32,11 +37,27 @@ export function AsideShoppingCart({
   className,
   ...props
 }: AsideShoppingCartProps) {
-  // TODO: Implement shopping cart logic
-  // const isEmpty = Math.random() > 0.5
-  const isEmpty = true
+  const { orders, clearCart, updateAmountInCart } = useShoppingCartContext()
 
+  const [opens, setOpens] = useState(
+    orders.map((o) => ({ id: o.id, open: false })),
+  )
   const [value, setValue] = useState('')
+
+  function onOpenChange(orderId: string, open: boolean) {
+    setOpens((prev) => {
+      if (!prev.some((o) => o.id === orderId)) {
+        return [...prev, { id: orderId, open }]
+      }
+
+      return prev.map((o) => {
+        if (o.id === orderId) {
+          return { ...o, open }
+        }
+        return o
+      })
+    })
+  }
 
   const deliveryOptions: { [key: string]: ReactNode } = {
     entrega: (
@@ -79,6 +100,14 @@ export function AsideShoppingCart({
       </>
     ),
   }
+
+  const isEmpty = orders.length === 0
+
+  const subtotal = orders.reduce((prevOrder, currentOrder) => {
+    return prevOrder + currentOrder.price * currentOrder.amountInShoppingCart
+  }, 0)
+  const taxDelivery = value === 'entrega' ? 7 : 0
+  const total = subtotal + taxDelivery
 
   return (
     <Card
@@ -168,9 +197,121 @@ export function AsideShoppingCart({
           <span className="text-muted-foreground text-lg">Sacola vazia</span>
         </CardContent>
       ) : (
-        <CardContent>
-          <div></div>
+        <CardContent className="overflow-y-auto scrollbar-thin px-4 scrollbar-thumb-(--sea-ink-soft) py-4 h-full">
+          <div className="flex items-center justify-between">
+            <span className="font-medium">Sua sacola</span>
+            <button
+              className="uppercase text-xs cursor-pointer font-medium"
+              onClick={() => clearCart()}
+            >
+              Limpar
+            </button>
+          </div>
+
+          <div className="flex flex-col gap-3 mt-4">
+            {orders.map((order) => {
+              const currentOpen = opens.find((o) => o.id === order.id)
+              return (
+                <Dialog
+                  key={order.id}
+                  open={currentOpen?.open}
+                  onOpenChange={(open) => {
+                    onOpenChange(order.id, open)
+                  }}
+                >
+                  <DialogTrigger asChild>
+                    <Card className="bg-card cursor-pointer gap-0 transition-shadow hover:shadow-lg p-3 rounded-md flex-row justify-between">
+                      <div className="flex flex-col gap-2 text-sm">
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-semibold">
+                            {order.amountInShoppingCart}x
+                          </span>
+                          <span>{order.name}</span>
+                        </div>
+
+                        <div className="flex mt-auto items-center gap-1.5">
+                          <InputUpdateOrderCartAmount
+                            amount={order.amountInShoppingCart}
+                            setAmount={(newAmount) =>
+                              updateAmountInCart(order.id, newAmount)
+                            }
+                            onClick={(e) => e.stopPropagation()}
+                            className="[&_span]:text-xs [&_input]:max-w-6 [&_button]:px-2 [&_svg]:size-3"
+                          />
+
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              clearCart(order.id)
+                            }}
+                            className="pl-2 whitespace-nowrap text-xs text-muted-foreground opacity-80 transition-opacity hover:opacity-100 cursor-pointer"
+                          >
+                            Remover
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="space-y-2 flex-1">
+                        <strong className="font-medium block text-sm text-right whitespace-nowrap shrink-0">
+                          {priceFormatter.format(
+                            order.price * order.amountInShoppingCart,
+                          )}
+                        </strong>
+                        <div className="rounded ml-auto overflow-hidden w-14 aspect-square">
+                          <img
+                            alt={order.name}
+                            src={order.imgUrl}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    </Card>
+                  </DialogTrigger>
+
+                  <AddToCartDialogContent
+                    product={{
+                      ...order,
+                      imageUrl: order.imgUrl,
+                    }}
+                    onOpenChange={(open) => onOpenChange(order.id, open)}
+                  />
+                </Dialog>
+              )
+            })}
+          </div>
         </CardContent>
+      )}
+
+      {!isEmpty && (
+        <>
+          <div className="border-t w-full border-dashed border-b-card-foreground" />
+          <div className="bg-card border-0 flex flex-col px-4 py-2.5">
+            <ul className="space-y-1">
+              <li className="flex items-center justify-between gap-1">
+                <span className="text-[13px] font-light text-muted-foreground">
+                  Subtotal
+                </span>
+                <span className="text-[13px] font-light text-muted-foreground">
+                  {priceFormatter.format(subtotal)}
+                </span>
+              </li>
+
+              <li className="flex items-center justify-between gap-1">
+                <span className="text-[13px] font-light text-muted-foreground">
+                  Taxa de entrega
+                </span>
+                <span className="text-[13px] font-light text-muted-foreground">
+                  {priceFormatter.format(taxDelivery)}
+                </span>
+              </li>
+
+              <li className="flex text-base items-center font-medium justify-between gap-1">
+                <span>Total</span>
+                <span>{priceFormatter.format(total)}</span>
+              </li>
+            </ul>
+          </div>
+        </>
       )}
 
       <div className="border-t border-dashed border-b-card-foreground" />

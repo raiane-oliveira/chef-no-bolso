@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { Button } from '../../../shared/ui/button'
+import { Button } from '@/shared/ui/button'
 import {
   DialogClose,
   DialogContent,
@@ -8,20 +8,30 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../../../shared/ui/dialog'
-import { Field, FieldDescription, FieldLabel } from '../../../shared/ui/field'
-import { Textarea } from '../../../shared/ui/textarea'
-import { useState } from 'react'
+import { Field, FieldDescription, FieldLabel } from '@/shared/ui/field'
+import { Textarea } from '@/shared/ui/textarea'
+import { useEffect, useState } from 'react'
 import type { Product } from '@/shared/api/types'
 import { priceFormatter } from '@/shared/lib/formatters'
+import { useShoppingCartContext } from '../model/shopping-cart-context'
+import { InputUpdateOrderCartAmount } from './input-update-order-cart-amount'
 
 interface AddToCartDialogContentProps {
   product: Product
+  onOpenChange: (open: boolean) => void
 }
 
 export function AddToCartDialogContent({
   product,
+  onOpenChange,
 }: AddToCartDialogContentProps) {
+  const { addToCart, orders } = useShoppingCartContext()
+  const orderInCart = orders.find((o) => o.id === product.id)
+
   const [textarea, setTextarea] = useState('')
+  const [amountInShoppingCart, setAmountInShoppingCart] = useState(
+    orderInCart ? orderInCart.amountInShoppingCart : 1,
+  )
 
   function onChangeTextarea(value: string) {
     if (value.length > 140) return
@@ -29,7 +39,25 @@ export function AddToCartDialogContent({
     setTextarea(value)
   }
 
-  const priceFormatted = priceFormatter.format(product.price)
+  useEffect(() => {
+    if (orderInCart) {
+      setAmountInShoppingCart(orderInCart.amountInShoppingCart)
+    }
+  }, [orderInCart?.amountInShoppingCart])
+
+  function onAddProductToCart() {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      imgUrl: product.imageUrl,
+      description: product.description,
+      price: product.price,
+      observation: textarea,
+      amountInShoppingCart: amountInShoppingCart,
+    })
+
+    onOpenChange(false)
+  }
 
   return (
     <DialogContent className="flex flex-col items-center overflow-hidden p-0 md:flex-row gap-4 sm:max-w-200 w-full max-h-158.5 h-full sm:min-h-100">
@@ -54,7 +82,7 @@ export function AddToCartDialogContent({
             {product.description}
           </DialogDescription>
 
-          <p className="mb-4">{priceFormatted}</p>
+          <p className="mb-4">{priceFormatter.format(product.price)}</p>
 
           <Field className="mt-auto">
             <div className="flex itcems-center gap-2 justify-between">
@@ -73,12 +101,19 @@ export function AddToCartDialogContent({
         </div>
 
         <DialogFooter className="justify-between bg-card border-t border-muted p-4 gap-3">
-          <span className="py-2 px-5 bg-muted rounded-sm">- 1 +</span>
+          <InputUpdateOrderCartAmount
+            amount={amountInShoppingCart}
+            setAmount={setAmountInShoppingCart}
+          />
           <Button
             size="lg"
             className="flex-1 flex items-center justify-between rounded-sm"
+            onClick={onAddProductToCart}
           >
-            Adicionar <span>{priceFormatted}</span>
+            {!orderInCart ? 'Adicionar' : 'Atualizar'}
+            <span>
+              {priceFormatter.format(product.price * amountInShoppingCart)}
+            </span>
           </Button>
         </DialogFooter>
       </div>

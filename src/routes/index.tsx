@@ -200,7 +200,7 @@ function App() {
         </div>
 
         <aside className="sticky max-w-80 w-full top-26.5">
-          <AsideShoppingCart />
+          <AsideShoppingCart className="max-h-[calc(100vh-126px)] " />
         </aside>
       </section>
     </main>

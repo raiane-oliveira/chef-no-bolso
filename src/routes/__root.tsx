@@ -13,6 +13,7 @@ import TanStackQueryDevtools from '../shared/config/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { ShoppingCartContextProvider } from '@/features/add-to-cart/model/shopping-cart-context'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -52,9 +53,11 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        <Header />
-        {children}
-        <Footer />
+        <ShoppingCartContextProvider>
+          <Header />
+          {children}
+          <Footer />
+        </ShoppingCartContextProvider>
         <TanStackDevtools
           config={{
             position: 'bottom-right',
