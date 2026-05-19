@@ -10,8 +10,10 @@ import {
   UserIcon,
 } from '@phosphor-icons/react'
 import { useEffect, useRef, useState } from 'react'
+import { useAuthContext } from '@/features/login/model/authentication-context'
 
 export default function Header() {
+  const { session } = useAuthContext()
   const [showTopHeader, setShowTopHeader] = useState(true)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
 
@@ -120,24 +122,46 @@ export default function Header() {
                   )
                 }}
               </NavLink>
-              <NavLink
-                to="/auth/login"
-                className={cn(
-                  'w-20',
-                  showTopHeader &&
-                    'text-muted [&.is-active_svg]:shadow-muted [&.is-active]:border-accent-foreground hover:border-muted [&.is-active_svg]:fill-muted',
-                )}
-                activeProps={{ className: 'is-active' }}
-              >
-                {({ isActive }) => {
-                  return (
-                    <>
-                      <UserIcon weight={isActive ? 'fill' : 'bold'} />
-                      Login
-                    </>
-                  )
-                }}
-              </NavLink>
+
+              {session ? (
+                <NavLink
+                  to="#"
+                  className={cn(
+                    'w-20',
+                    showTopHeader &&
+                      'text-muted [&.is-active_svg]:shadow-muted [&.is-active]:border-accent-foreground hover:border-muted [&.is-active_svg]:fill-muted',
+                  )}
+                  activeProps={{ className: 'is-active' }}
+                >
+                  {({ isActive }) => {
+                    return (
+                      <>
+                        <UserIcon weight={isActive ? 'fill' : 'bold'} />
+                        Minha conta
+                      </>
+                    )
+                  }}
+                </NavLink>
+              ) : (
+                <NavLink
+                  to="/auth/login"
+                  className={cn(
+                    'w-20',
+                    showTopHeader &&
+                      'text-muted [&.is-active_svg]:shadow-muted [&.is-active]:border-accent-foreground hover:border-muted [&.is-active_svg]:fill-muted',
+                  )}
+                  activeProps={{ className: 'is-active' }}
+                >
+                  {({ isActive }) => {
+                    return (
+                      <>
+                        <UserIcon weight={isActive ? 'fill' : 'bold'} />
+                        Login
+                      </>
+                    )
+                  }}
+                </NavLink>
+              )}
 
               <ThemeToggle />
             </div>

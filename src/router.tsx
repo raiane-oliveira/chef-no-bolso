@@ -3,13 +3,19 @@ import { routeTree } from './routeTree.gen'
 
 import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query'
 import { getContext } from './shared/config/tanstack-query/root-provider'
+import type { UserSession } from './features/login/model/authentication-context'
 
 export function getRouter() {
   const context = getContext()
 
   const router = createTanStackRouter({
     routeTree,
-    context,
+    context: {
+      ...context,
+      auth: {
+        session: null as UserSession | null,
+      },
+    },
     scrollRestoration: true,
     defaultPreload: 'intent',
     defaultPreloadStaleTime: 0,
