@@ -9,7 +9,7 @@ import {
   UserIcon,
 } from '@phosphor-icons/react'
 import { useEffect, useRef, useState } from 'react'
-import { useAuthContext } from '@/features/login/model/authentication-context'
+import { useAuthContext } from '@/features/auth/model/authentication-context'
 
 export default function Header() {
   const { session } = useAuthContext()

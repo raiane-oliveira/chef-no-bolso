@@ -1,8 +1,8 @@
 import { useAuthContext } from '@/features/auth/model/authentication-context'
-import { SignInCard } from '@/features/auth/ui/sign-in-card'
+import { SignUpCard } from '@/features/auth/ui/sign-up-card'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/auth/login')({
+export const Route = createFileRoute('/auth/register')({
   component: RouteComponent,
 })
 
@@ -17,9 +17,9 @@ function RouteComponent() {
   return (
     <main className="page-wrap min-h-[calc(100vh-257px)] pt-10">
       <section className="grid place-items-center gap-4">
-        <h1 className="text-2xl font-semibold">Login</h1>
+        <h1 className="text-2xl font-semibold">Cadastrar</h1>
 
-        <SignInCard />
+        <SignUpCard />
       </section>
     </main>
   )

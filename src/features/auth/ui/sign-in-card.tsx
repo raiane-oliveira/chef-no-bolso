@@ -10,7 +10,7 @@ import {
 } from '@/shared/ui/card'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { useNavigate } from '@tanstack/react-router'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { useTransition } from 'react'
 import { useAuthContext } from '../model/authentication-context'
 
@@ -82,8 +82,12 @@ export function SignInCard() {
         >
           {isPending ? 'Entrando...' : 'Entrar'}
         </Button>
-        <Button variant="link" className="w-full cursor-pointer font-normal">
-          Ainda não tem uma conta? Cadastre-se
+        <Button
+          asChild
+          variant="link"
+          className="w-full cursor-pointer font-normal"
+        >
+          <Link to="/auth/register">Ainda não tem uma conta? Cadastre-se</Link>
         </Button>
       </CardFooter>
     </Card>

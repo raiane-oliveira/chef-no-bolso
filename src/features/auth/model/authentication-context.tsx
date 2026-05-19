@@ -20,12 +20,10 @@ export function AuthenticationContextProvider({ children }: ChildrenProps) {
 
   function handleLogin(login: UserSession) {
     setSession(login)
-    localStorage.setItem('@chef-no-bolso:v1:session', JSON.stringify(login))
   }
 
   function handleLogout() {
     setSession(null)
-    localStorage.removeItem('@chef-no-bolso:v1:session')
   }
 
   return (

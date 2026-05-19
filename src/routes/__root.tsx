@@ -17,7 +17,7 @@ import { ShoppingCartContextProvider } from '@/features/add-to-cart/model/shoppi
 import {
   AuthenticationContextProvider,
   type UserSession,
-} from '@/features/login/model/authentication-context'
+} from '@/features/auth/model/authentication-context'
 
 interface MyRouterContext {
   queryClient: QueryClient

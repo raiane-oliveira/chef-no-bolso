@@ -1,5 +1,5 @@
-import { useAuthContext } from '@/features/login/model/authentication-context'
-import { SignInCard } from '@/features/login/ui/sign-in-card'
+import { useAuthContext } from '@/features/auth/model/authentication-context'
+import { SignInCard } from '@/features/auth/ui/sign-in-card'
 import { cn } from '@/shared/lib/utils'
 import { createFileRoute } from '@tanstack/react-router'
 
