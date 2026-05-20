@@ -27,7 +27,10 @@ import { ChevronRight } from 'lucide-react'
 import { Select as SelectPrimitive } from 'radix-ui'
 import { useState, type ReactNode } from 'react'
 import { Button } from '../../../shared/ui/button'
-import { useShoppingCartContext } from '../model/shopping-cart-context'
+import {
+  useShoppingCartContext,
+  type DeliveryType,
+} from '../model/shopping-cart-context'
 import { AddToCartDialogContent } from './add-to-cart-dialog-content'
 import { InputUpdateOrderCartAmount } from './input-update-order-cart-amount'
 
@@ -39,15 +42,23 @@ export function AsideShoppingCart({
 }: AsideShoppingCartProps) {
   const {
     orders,
+    delivery,
     totalValue: subtotal,
     clearCart,
     updateAmountInCart,
+    updateDeliveryOption,
   } = useShoppingCartContext()
+
+  const deliveryType = delivery?.type || ''
+
+  const isEmpty = orders.length === 0
+
+  const taxDelivery = deliveryType === 'entrega' ? 7 : 0
+  const total = subtotal + taxDelivery
 
   const [opens, setOpens] = useState(
     orders.map((o) => ({ id: o.id, open: false })),
   )
-  const [value, setValue] = useState('')
 
   function onOpenChange(orderId: string, open: boolean) {
     setOpens((prev) => {
@@ -61,6 +72,13 @@ export function AsideShoppingCart({
         }
         return o
       })
+    })
+  }
+
+  function handleDeliveryValueChange(value: string) {
+    updateDeliveryOption({
+      type: value as DeliveryType,
+      price: value === 'entrega' ? 7 : 0,
     })
   }
 
@@ -106,11 +124,6 @@ export function AsideShoppingCart({
     ),
   }
 
-  const isEmpty = orders.length === 0
-
-  const taxDelivery = value === 'entrega' ? 7 : 0
-  const total = subtotal + taxDelivery
-
   return (
     <Card
       {...props}
@@ -120,7 +133,7 @@ export function AsideShoppingCart({
       )}
     >
       <CardHeader className="bg-transparent block p-0">
-        <Select value={value} onValueChange={setValue}>
+        <Select value={deliveryType} onValueChange={handleDeliveryValueChange}>
           <SelectPrimitive.Trigger
             data-slot="select-trigger"
             className="flex w-full items-center justify-between gap-2 bg-card px-3 py-4 text-[0.8125rem] font-medium whitespace-nowrap shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-placeholder:text-muted-foreground data-[size=default]:h-full data-[size=sm]:h-8 *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:text-left *:data-[slot=select-value]:items-center *:data-[slot=select-value]:flex-1 [&_[data-slot=select-value]_p]:font-light *:data-[slot=select-value]:w-full *:data-[slot=select-value]:gap-3 dark:bg-input/30 hover:bg-transparent dark:hover:bg-input/50 dark:aria-invalid:ring-destructive/40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground"
@@ -129,7 +142,7 @@ export function AsideShoppingCart({
               className="w-full flex-1"
               placeholder="Calcular taxa e tempo de entrega"
             >
-              {deliveryOptions[value] || (
+              {deliveryOptions[deliveryType] || (
                 <span className="text-muted-foreground">
                   Calcular taxa e tempo de entrega
                 </span>

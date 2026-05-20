@@ -11,19 +11,30 @@ interface Order {
   amountInShoppingCart: number
 }
 
+export type DeliveryType = 'entrega' | 'retirada' | 'consumo-no-local'
+
+interface DeliveryOption {
+  type: DeliveryType
+  address?: string
+  price: number
+}
+
 interface ShoppingCartContext {
   orders: Order[]
+  delivery?: DeliveryOption
   totalItemsInCart: number
   totalValue: number
   updateAmountInCart: (orderId: string, amount: number) => void
   addToCart: (order: Order) => void
   clearCart: (orderId?: string) => void
+  updateDeliveryOption: (deliveryOption: DeliveryOption) => void
 }
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext)
 
 type ShoppingCartState = {
   orders: Order[]
+  delivery?: DeliveryOption
 }
 
 export function ShoppingCartContextProvider({ children }: ChildrenProps) {
@@ -63,11 +74,13 @@ export function ShoppingCartContextProvider({ children }: ChildrenProps) {
       const orderAlreadyInCart = prev.orders.find((o) => o.id === order.id)
       if (!orderAlreadyInCart) {
         return {
+          ...prev,
           orders: [...prev.orders, order],
         }
       }
 
       return {
+        ...prev,
         orders: [
           ...prev.orders.map((prevOrder) =>
             prevOrder.id === order.id ? order : prevOrder,
@@ -81,17 +94,19 @@ export function ShoppingCartContextProvider({ children }: ChildrenProps) {
     if (orderId) {
       return setShoppingCart((prev) => {
         return {
+          ...prev,
           orders: prev.orders.filter((o) => o.id !== orderId),
         }
       })
     }
 
-    setShoppingCart({ orders: [] })
+    setShoppingCart((prev) => ({ ...prev, orders: [] }))
   }
 
   function updateAmountInCart(orderId: string, amount: number) {
     setShoppingCart((prev) => {
       return {
+        ...prev,
         orders: prev.orders.map((prevOrder) =>
           prevOrder.id === orderId
             ? {
@@ -104,15 +119,26 @@ export function ShoppingCartContextProvider({ children }: ChildrenProps) {
     })
   }
 
+  function updateDeliveryOption(deliveryOption: DeliveryOption) {
+    setShoppingCart((prev) => {
+      return {
+        ...prev,
+        delivery: deliveryOption,
+      }
+    })
+  }
+
   return (
     <ShoppingCartContext
       value={{
         orders: shoppingCart.orders,
+        delivery: shoppingCart.delivery,
         totalItemsInCart,
         totalValue,
         addToCart,
         clearCart,
         updateAmountInCart,
+        updateDeliveryOption,
       }}
     >
       {children}
