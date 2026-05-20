@@ -3,6 +3,13 @@ import { SignInCard } from '@/features/auth/ui/sign-in-card'
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/auth/login')({
+  head: () => ({
+    meta: [
+      {
+        title: 'Entrar | ChefNoBolso',
+      },
+    ],
+  }),
   component: RouteComponent,
 })
 

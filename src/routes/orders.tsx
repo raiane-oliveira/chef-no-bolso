@@ -4,6 +4,13 @@ import { cn } from '@/shared/lib/utils'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/orders')({
+  head: () => ({
+    meta: [
+      {
+        title: 'Pedidos | ChefNoBolso',
+      },
+    ],
+  }),
   component: RouteComponent,
 })
 

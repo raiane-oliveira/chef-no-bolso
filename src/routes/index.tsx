@@ -38,7 +38,16 @@ import { useShoppingCartContext } from '@/features/add-to-cart/model/shopping-ca
 import { Footer } from '@/widgets/footer'
 import { cn } from '@/shared/lib/utils'
 
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({
+  head: () => ({
+    meta: [
+      {
+        title: 'Início | ChefNoBolso',
+      },
+    ],
+  }),
+  component: App,
+})
 
 function App() {
   const { orders, totalItemsInCart, totalValue } = useShoppingCartContext()
