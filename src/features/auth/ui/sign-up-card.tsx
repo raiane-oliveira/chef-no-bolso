@@ -30,7 +30,7 @@ export function SignUpCard() {
   }
 
   return (
-    <Card className="w-full max-w-sm rounded-md">
+    <Card className="w-full max-w-full sm:max-w-sm rounded-md">
       <CardHeader>
         <CardTitle>Cadastre-se </CardTitle>
         <CardDescription>

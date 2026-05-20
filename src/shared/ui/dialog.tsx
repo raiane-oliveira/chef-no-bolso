@@ -55,7 +55,7 @@ function DialogContent({
 }) {
   return (
     <DialogPortal data-slot="dialog-portal">
-      <DialogOverlay className="grid overflow-y-auto place-items-center p-8">
+      <DialogOverlay className="grid overflow-y-auto place-items-center md:p-8">
         <DialogPrimitive.Content
           data-slot="dialog-content"
           className={cn(
@@ -101,7 +101,7 @@ function DialogFooter({
   return (
     <div
       data-slot="dialog-footer"
-      className={cn('flex flex-col-reverse gap-2 sm:flex-row', className)}
+      className={cn('flex gap-2 flex-row', className)}
       {...props}
     >
       {children}

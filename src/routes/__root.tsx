@@ -5,10 +5,10 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import Footer from '../widgets/footer'
-import Header from '../widgets/header'
+import { Footer } from '@/widgets/footer'
+import { Header } from '@/widgets/header'
 
-import TanStackQueryDevtools from '../shared/config/tanstack-query/devtools'
+import TanStackQueryDevtools from '@/shared/config/tanstack-query/devtools'
 
 import appCss from '../styles.css?url'
 
@@ -18,6 +18,7 @@ import {
   AuthenticationContextProvider,
   type UserSession,
 } from '@/features/auth/model/authentication-context'
+import { HeaderMobile } from '@/widgets/header-mobile'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -60,9 +61,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
         <AuthenticationContextProvider>
           <ShoppingCartContextProvider>
-            <Header />
+            <Header className="lg:block hidden" />
+            <HeaderMobile className="lg:hidden" />
             {children}
-            <Footer />
+            <Footer className="hidden lg:block" />
           </ShoppingCartContextProvider>
         </AuthenticationContextProvider>
         <TanStackDevtools

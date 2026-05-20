@@ -60,23 +60,30 @@ export function AddToCartDialogContent({
   }
 
   return (
-    <DialogContent className="flex flex-col items-center overflow-hidden p-0 md:flex-row gap-4 sm:max-w-200 w-full max-h-158.5 h-full sm:min-h-100">
-      <div className="relative p-4 overflow-hidden grid place-items-center md:w-80 lg:w-88 xl:w-96 md:min-h-52 h-full">
+    <DialogContent
+      showCloseButton={false}
+      className="flex max-md:rounded-none relative flex-col items-center overflow-hidden p-0 md:flex-row gap-4 sm:max-w-full max-w-full md:max-w-200 md:w-full md:max-h-158.5 h-full md:min-h-100"
+    >
+      <DialogClose className="cursor-pointer top-4 right-4 absolute z-10 rounded-full md:hidden bg-card p-1">
+        <X className="size-5" />
+      </DialogClose>
+
+      <div className="relative md:p-4 overflow-hidden grid place-items-center w-full md:w-80 lg:w-88 xl:w-96 sm:min-h-52 max-sm:max-h-80 sm:h-2/5 md:h-full">
         <img
           src={product.imageUrl}
-          className="object-cover shadow border border-muted object-center w-full aspect-square rounded-xl"
+          className="object-cover shadow border border-muted object-center w-full max-md:h-full md:aspect-square md:rounded-xl"
         />
       </div>
 
       <div className="flex flex-col bg-muted flex-1 h-full border-l border-muted">
-        <DialogHeader className="flex-row p-4 items-center justify-between">
+        <DialogHeader className="flex-row max-md:hidden p-4 items-center justify-between">
           <span>Detalhes do pedido</span>
           <DialogClose className="cursor-pointer">
             <X />
           </DialogClose>
         </DialogHeader>
 
-        <div className="overflow-y-auto p-6 h-full bg-card rounded-t-2xl flex flex-col">
+        <div className="overflow-y-auto max-md:-mt-8 z-10 max-sm:px-3 p-6 h-full bg-card rounded-t-2xl flex flex-col">
           <DialogTitle>{product.name}</DialogTitle>
           <DialogDescription className="mt-3 mb-6">
             {product.description}

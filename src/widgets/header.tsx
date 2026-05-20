@@ -8,10 +8,12 @@ import {
   ShoppingBagIcon,
   UserIcon,
 } from '@phosphor-icons/react'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ComponentProps } from 'react'
 import { useAuthContext } from '@/features/auth/model/authentication-context'
 
-export default function Header() {
+interface HeaderProps extends ComponentProps<'header'> {}
+
+export function Header({ className, ...props }: HeaderProps) {
   const { session } = useAuthContext()
   const [showTopHeader, setShowTopHeader] = useState(true)
   const sentinelRef = useRef<HTMLDivElement | null>(null)
@@ -47,9 +49,11 @@ export default function Header() {
       />
 
       <header
+        {...props}
         className={cn(
           'sticky top-0 z-50 border-b border-(--line) bg-(--header-bg) px-4 backdrop-blur-lg',
           showTopHeader && 'bg-accent-foreground',
+          className,
         )}
       >
         <nav className="page-wrap flex justify-between flex-wrap items-center gap-x-3 gap-y-2 py-3 sm:py-4">

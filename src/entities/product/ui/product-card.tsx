@@ -33,7 +33,7 @@ export function ProductCard({
           <Card
             {...props}
             className={cn(
-              'px-3 py-4 flex-row items-start overflow-hidden gap-6 rounded-md',
+              'px-3 py-4 flex-row items-start overflow-hidden gap-3 sm:gap-6 rounded-md',
               className,
             )}
           >

@@ -11,7 +11,7 @@ function RouteComponent() {
   const { session } = useAuthContext()
 
   return (
-    <main className="page-wrap min-h-[calc(100vh-257px)] pt-10">
+    <main className="page-wrap max-md:pb-30 min-h-[calc(100vh-257px)] pt-10">
       <section className={cn('grid gap-4', !session && 'place-items-center ')}>
         <h1 className="text-2xl font-semibold">Seus pedidos</h1>
 

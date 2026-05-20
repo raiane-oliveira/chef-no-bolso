@@ -15,8 +15,8 @@ function RouteComponent() {
   }
 
   return (
-    <main className="page-wrap min-h-[calc(100vh-257px)] pt-10">
-      <section className="grid place-items-center gap-4">
+    <main className="page-wrap max-md:pb-30 min-h-[calc(100vh-257px)] pt-10">
+      <section className="sm:grid flex flex-col place-items-center gap-4">
         <h1 className="text-2xl font-semibold">Login</h1>
 
         <SignInCard />

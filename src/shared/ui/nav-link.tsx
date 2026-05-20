@@ -10,14 +10,20 @@ export const navLinkVariants = cva(
     variants: {
       variant: {
         default:
-          'text-(--lagoon-deep) border-1 border-transparent [&.is-active]:shadow-[0px_0px_0px_1px] [&.is-active_svg]:shadow-(--lagoon-deep) [&_svg]:size-5 [&.is-active_svg]:fill-(--lagoon-deep) [&.is-active]:border-(--lagoon-deep) hover:border-(--lagoon-deep)',
+          'text-(--lagoon-deep) border-transparent [&.is-active_svg]:shadow-(--lagoon-deep) [&.is-active_svg]:fill-(--lagoon-deep) [&.is-active]:border-(--lagoon-deep) hover:border-(--lagoon-deep)',
         active:
           'bg-(--musgo) [&_svg]:fill-(--lagoon-deep) text-(--sand) border-1 border-(--musgo)',
         link: 'p-0 text-(--foreground) flex-row text-base hover:text-(--musgo)',
       },
+      size: {
+        default:
+          '[&.is-active]:shadow-[0px_0px_0px_1px] border-1 [&_svg]:size-5 ',
+        sm: '[&_svg]:size-4 text-[13px] focus-visible:ring-[2px]',
+      },
     },
     defaultVariants: {
       variant: 'default',
+      size: 'default',
     },
   },
 )
@@ -28,13 +34,13 @@ interface BaseNavLinkProps
     VariantProps<typeof navLinkVariants> {}
 
 const BaseLinkComponent = React.forwardRef<HTMLAnchorElement, BaseNavLinkProps>(
-  ({ className, variant = 'default', ...props }, ref) => {
+  ({ className, size, variant = 'default', ...props }, ref) => {
     return (
       <a
         ref={ref}
         data-variant={variant}
         {...props}
-        className={cn(navLinkVariants({ variant, className }))}
+        className={cn(navLinkVariants({ variant, size, className }))}
       />
     )
   },
