@@ -1,5 +1,5 @@
 import type { ChildrenProps } from '@/shared/lib/shared-types'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface Order {
   id: string
@@ -13,6 +13,8 @@ interface Order {
 
 interface ShoppingCartContext {
   orders: Order[]
+  totalItemsInCart: number
+  totalValue: number
   updateAmountInCart: (orderId: string, amount: number) => void
   addToCart: (order: Order) => void
   clearCart: (orderId?: string) => void
@@ -20,10 +22,41 @@ interface ShoppingCartContext {
 
 const ShoppingCartContext = createContext({} as ShoppingCartContext)
 
+type ShoppingCartState = {
+  orders: Order[]
+}
+
 export function ShoppingCartContextProvider({ children }: ChildrenProps) {
-  const [shoppingCart, setShoppingCart] = useState<{
-    orders: Order[]
-  }>({ orders: [] })
+  const [shoppingCart, setShoppingCart] = useState<ShoppingCartState>(() => {
+    const defaultState: ShoppingCartState = {
+      orders: [],
+    }
+
+    if (typeof window === 'undefined') return defaultState
+
+    const storedStateAsJSON = localStorage.getItem(
+      '@chef-no-bolso:shopping-cart-state-1.0.0',
+    )
+
+    if (storedStateAsJSON)
+      return JSON.parse(storedStateAsJSON) as ShoppingCartState
+
+    return defaultState
+  })
+
+  const totalItemsInCart = shoppingCart.orders.reduce((acc, order) => {
+    return acc + order.amountInShoppingCart
+  }, 0)
+
+  const totalValue = shoppingCart.orders.reduce((acc, currentOrder) => {
+    return acc + currentOrder.price * currentOrder.amountInShoppingCart
+  }, 0)
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(shoppingCart)
+
+    localStorage.setItem('@chef-no-bolso:shopping-cart-state-1.0.0', stateJSON)
+  }, [shoppingCart])
 
   function addToCart(order: Order) {
     setShoppingCart((prev) => {
@@ -75,6 +108,8 @@ export function ShoppingCartContextProvider({ children }: ChildrenProps) {
     <ShoppingCartContext
       value={{
         orders: shoppingCart.orders,
+        totalItemsInCart,
+        totalValue,
         addToCart,
         clearCart,
         updateAmountInCart,

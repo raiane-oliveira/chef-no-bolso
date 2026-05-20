@@ -41,7 +41,7 @@ import { cn } from '@/shared/lib/utils'
 export const Route = createFileRoute('/')({ component: App })
 
 function App() {
-  const { orders } = useShoppingCartContext()
+  const { orders, totalItemsInCart, totalValue } = useShoppingCartContext()
 
   return (
     <>
@@ -249,9 +249,14 @@ function App() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button className="w-full cursor-pointer rounded-none text-base justify-between py-3 h-auto">
-                    <HandbagSimpleIcon className="size-6" />
+                    <div className="relative">
+                      <HandbagSimpleIcon className="size-7" />
+                      <span className="absolute size-5 bg-card grid place-items-center text-accent-foreground text-xs rounded-full -bottom-1 -right-2">
+                        {totalItemsInCart}
+                      </span>
+                    </div>
                     Ver sacola
-                    <span>{priceFormatter.format(10)}</span>
+                    <span>{priceFormatter.format(totalValue)}</span>
                   </Button>
                 </DialogTrigger>
 

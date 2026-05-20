@@ -37,7 +37,12 @@ export function AsideShoppingCart({
   className,
   ...props
 }: AsideShoppingCartProps) {
-  const { orders, clearCart, updateAmountInCart } = useShoppingCartContext()
+  const {
+    orders,
+    totalValue: subtotal,
+    clearCart,
+    updateAmountInCart,
+  } = useShoppingCartContext()
 
   const [opens, setOpens] = useState(
     orders.map((o) => ({ id: o.id, open: false })),
@@ -103,9 +108,6 @@ export function AsideShoppingCart({
 
   const isEmpty = orders.length === 0
 
-  const subtotal = orders.reduce((prevOrder, currentOrder) => {
-    return prevOrder + currentOrder.price * currentOrder.amountInShoppingCart
-  }, 0)
   const taxDelivery = value === 'entrega' ? 7 : 0
   const total = subtotal + taxDelivery
 
