@@ -13,7 +13,7 @@ export const navLinkVariants = cva(
           'text-(--lagoon-deep) border-transparent [&.is-active_svg]:shadow-(--lagoon-deep) [&.is-active_svg]:fill-(--lagoon-deep) [&.is-active]:border-(--lagoon-deep) hover:border-(--lagoon-deep)',
         active:
           'bg-(--musgo) [&_svg]:fill-(--lagoon-deep) text-(--sand) border-1 border-(--musgo)',
-        link: 'p-0 text-(--foreground) flex-row text-base hover:text-(--musgo)',
+        link: 'p-0 text-(--foreground) flex-row text-base hover:text-(--lagoon)',
       },
       size: {
         default:
