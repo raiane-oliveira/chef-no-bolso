@@ -37,6 +37,7 @@ import { priceFormatter } from '@/shared/lib/formatters'
 import { useShoppingCartContext } from '@/features/add-to-cart/model/shopping-cart-context'
 import { Footer } from '@/widgets/footer'
 import { cn } from '@/shared/lib/utils'
+import { CompanyInfoContent } from '@/widgets/company-info-content'
 
 export const Route = createFileRoute('/')({
   head: () => ({
@@ -91,12 +92,31 @@ function App() {
                     <span className="lg:hidden max-sm:hidden">•</span>
                   </div>
 
-                  <Button
-                    variant="link"
-                    className="text-gray-600 max-md:w-full md:mx-0 mx-auto p-0 font-semibold"
-                  >
-                    Mais informações
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant="link"
+                        className="text-gray-600 max-md:w-full md:mx-0 mx-auto p-0 font-semibold"
+                      >
+                        Mais informações
+                      </Button>
+                    </DialogTrigger>
+
+                    <DialogContent className="px-0">
+                      <DialogHeader className="flex-row px-4 justify-between items-center">
+                        <DialogTitle className="flex text-xl items-center gap-2">
+                          <ChefHatIcon size={26} />
+                          ChefNoBolso
+                        </DialogTitle>
+
+                        <DialogClose className="cursor-pointer">
+                          <XIcon />
+                        </DialogClose>
+                      </DialogHeader>
+
+                      <CompanyInfoContent />
+                    </DialogContent>
+                  </Dialog>
                 </div>
               </div>
             </div>
