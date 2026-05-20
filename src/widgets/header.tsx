@@ -61,7 +61,7 @@ export function Header({ className, ...props }: HeaderProps) {
             to="/"
             variant="link"
             className={cn(
-              'inline-flex font-semibold items-center gap-2',
+              'inline-flex border-0 font-semibold items-center gap-2',
               showTopHeader && 'text-(--sand)',
             )}
           >

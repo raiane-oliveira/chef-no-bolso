@@ -141,7 +141,11 @@ export function AsideShoppingCart({
             </SelectPrimitive.Icon>
           </SelectPrimitive.Trigger>
 
-          <SelectContent position="popper">
+          <SelectContent
+            position="popper"
+            side="bottom"
+            className="max-lg:**:data-[slot=select-content-viewport]:min-w-[calc(var(--radix-select-trigger-width)-1.5rem)]"
+          >
             <SelectGroup className="py-2">
               <SelectLabel className="text-sm py-2 px-3">
                 Como você quer receber o pedido?
