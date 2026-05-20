@@ -289,9 +289,9 @@ function App() {
                   </Button>
                 </DialogTrigger>
 
-                <DialogPortal data-slot="dialog-portal">
-                  <DialogOverlay className="grid overflow-y-auto place-items-center p-8">
-                    <DialogPrimitive.Content className="fixed w-full bottom-0 top-0 bg-(--bg-base) grid grid-rows-[auto_1fr]">
+                <DialogPortal>
+                  <DialogOverlay className="grid overflow-y-auto place-items-center">
+                    <DialogPrimitive.Content className="fixed w-full inset-0 bg-(--bg-base) grid grid-rows-[auto_1fr]">
                       <DialogHeader className="flex-row p-4 items-center justify-between bg-card">
                         <DialogTitle className="flex items-center gap-2">
                           <ChefHatIcon size={26} />
