@@ -5,7 +5,7 @@ API REST desenvolvida com Node.js, Express, Mongoose e JWT.
 ## Pré-requisitos
 
 - [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/) rodando localmente
+- [MongoDB](https://www.mongodb.com/) rodando localmente (docker compose)
 
 ## Configuração
 

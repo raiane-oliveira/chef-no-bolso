@@ -11,6 +11,7 @@ import { orderRoutes } from './routes/orderRoutes.js'
 import { couponRoutes } from './routes/couponRoutes.js'
 import { seedDefaultUser } from './database/seed-default-user.js'
 import { seedData } from './database/seedData.js'
+import { deliveryRouter } from './routes/deliveryRoutes.js'
 
 const app = express()
 const port = process.env.PORT || 3333
@@ -28,6 +29,7 @@ app.use('/products', productRoutes)
 app.use('/categories', categoryRoutes)
 app.use('/orders', orderRoutes)
 app.use('/coupons', couponRoutes)
+app.use('/deliveries', deliveryRouter)
 
 async function bootstrap() {
   await connectDatabase()

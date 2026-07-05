@@ -14,6 +14,12 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true
+    },
     passwordHash: {
       type: String,
       required: true,
@@ -21,7 +27,7 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['CUSTOMER', 'ADMIN'],
+      enum: ['CUSTOMER', 'ADMIN', 'DELIVERY'],
       default: 'CUSTOMER',
     },
   },

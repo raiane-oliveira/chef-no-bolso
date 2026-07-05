@@ -34,3 +34,11 @@ export function adminMiddleware(request, response, next) {
 
   return next()
 }
+
+export function deliveryMiddleware(request, response, next) {
+  if (!['DELIVERY', 'ADMIN'].includes(request.user?.role)) {
+    return response.status(403).json({ message: 'Access denied.' })
+  }
+
+  return next()
+}

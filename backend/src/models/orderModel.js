@@ -40,6 +40,7 @@ const orderSchema = new mongoose.Schema(
       required: true,
     },
     deliveryAddress: String,
+    deliveryPerson: mongoose.Schema.Types.ObjectId,
     deliveryFee: {
       type: Number,
       default: 0,

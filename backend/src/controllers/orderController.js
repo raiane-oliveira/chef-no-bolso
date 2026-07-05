@@ -1,4 +1,6 @@
 import { Order } from '../models/orderModel.js'
+import{ Entrega } from '../models/entrega.model.js';
+import{ Entregador } from '../models/entregador.model.js';
 
 export async function listOrders(request, response) {
   const filter = {}
@@ -26,12 +28,19 @@ export async function createOrder(request, response) {
     return response.status(400).json({ message: 'Delivery type is required' })
   }
 
+  let deliveryPerson;
+  if (deliveryType.trim().toLowerCase() === "entrega") {
+    const deliveryPersons = await getEntregadoresDisponiveis()
+    deliveryPerson = deliveryPersons[Math.floor(Math.random() * deliveryPersons.length)]
+  }
+
   const order = await Order.create({
     user: request.user.id,
     items,
     deliveryType,
     deliveryAddress,
     deliveryFee: deliveryFee || 0,
+    deliveryPerson:  deliveryPerson?._id,
     subtotal,
     total,
     coupon,
@@ -40,3 +49,16 @@ export async function createOrder(request, response) {
 
   return response.status(201).json({ order })
 }
+
+async function getEntregadoresDisponiveis() {
+  const idsComEntregaAtiva = await Entrega.distinct('entregador', {
+    status: { $in: ['pendente', 'a_caminho'] }
+  });
+
+  const entregadoresDisponiveis = await Entregador.find({
+    _id: { $nin: idsComEntregaAtiva }
+  }).sort({ createdAt: -1 });
+
+  return entregadoresDisponiveis;
+}
+
