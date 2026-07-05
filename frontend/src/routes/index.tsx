@@ -1,27 +1,12 @@
-import { AsideShoppingCart } from '@/features/add-to-cart/ui/aside-shopping-cart'
 import { ProductCard } from '@/entities/product/ui/product-card'
+import { useShoppingCartContext } from '@/features/add-to-cart/model/shopping-cart-context'
+import { AsideShoppingCart } from '@/features/add-to-cart/ui/aside-shopping-cart'
+import { useCategories } from '@/features/get-categories/model/get-categories'
+import type { Category, Product } from '@/shared/api/types'
+import { priceFormatter } from '@/shared/lib/formatters'
+import { cn } from '@/shared/lib/utils'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
-import { Input } from '@/shared/ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select'
-import type { Product } from '@/shared/api/types'
-import {
-  ChefHatIcon,
-  GiftIcon,
-  HandbagSimpleIcon,
-  MagnifyingGlassIcon,
-  MapPinIcon,
-  XIcon,
-} from '@phosphor-icons/react'
-import { createFileRoute } from '@tanstack/react-router'
 import {
   Dialog,
   DialogClose,
@@ -32,12 +17,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog'
-import { Dialog as DialogPrimitive } from 'radix-ui'
-import { priceFormatter } from '@/shared/lib/formatters'
-import { useShoppingCartContext } from '@/features/add-to-cart/model/shopping-cart-context'
-import { Footer } from '@/widgets/footer'
-import { cn } from '@/shared/lib/utils'
+import { Input } from '@/shared/ui/input'
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select'
 import { CompanyInfoContent } from '@/widgets/company-info-content'
+import { Footer } from '@/widgets/footer'
+import {
+  ChefHatIcon,
+  GiftIcon,
+  HandbagSimpleIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  XIcon,
+} from '@phosphor-icons/react'
+import { createFileRoute } from '@tanstack/react-router'
+import { Dialog as DialogPrimitive } from 'radix-ui'
+
 export const Route = createFileRoute('/')({
   head: () => ({
     meta: [
@@ -51,6 +53,10 @@ export const Route = createFileRoute('/')({
 
 function App() {
   const { orders, totalItemsInCart, totalValue } = useShoppingCartContext()
+  const { data: categoriesData, isLoading: isCategoriesLoading } =
+    useCategories()
+
+  const categories: Category[] = categoriesData?.categories || []
 
   return (
     <>
@@ -148,16 +154,22 @@ function App() {
             <section className="flex max-md:px-3 justify-between">
               <Select>
                 <SelectTrigger className="w-full bg-card data-[size=default]:h-full rounded-sm max-w-48">
-                  <SelectValue placeholder="Lista de categorias" />
+                  <SelectValue
+                    placeholder={
+                      isCategoriesLoading
+                        ? 'Carregando categorias...'
+                        : 'Lista de categorias'
+                    }
+                  />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Categorias</SelectLabel>
-                    <SelectItem value="apple">Apple</SelectItem>
-                    <SelectItem value="banana">Banana</SelectItem>
-                    <SelectItem value="blueberry">Blueberry</SelectItem>
-                    <SelectItem value="grapes">Grapes</SelectItem>
-                    <SelectItem value="pineapple">Pineapple</SelectItem>
+                    {categories?.map((category) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.name}
+                      </SelectItem>
+                    ))}
                   </SelectGroup>
                 </SelectContent>
               </Select>

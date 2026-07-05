@@ -19,6 +19,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu'
+import { Link } from '@tanstack/react-router'
 
 interface HeaderMobileProps extends ComponentProps<'header'> {}
 
@@ -83,20 +84,34 @@ export function HeaderMobile({ className, ...props }: HeaderMobileProps) {
         {session ? (
           <DropdownMenu>
             <DropdownMenuTrigger
-              className={cn('inline-flex w-20 flex-col items-center gap-1 rounded-md border border-transparent px-2 py-1 text-sm transition-colors hover:border-muted')}
+              className={cn(
+                'inline-flex w-20 flex-col items-center gap-1 rounded-md border border-transparent px-2 py-1 text-sm transition-colors hover:border-muted',
+              )}
             >
               <UserIcon weight="bold" />
               Minha conta
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuItem>
-                <UserCircleIcon weight="bold" />
-                Meus dados
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <ListIcon weight="bold" />
-                Meus pedidos
-              </DropdownMenuItem>
+              {session.role !== 'ADMIN' && (
+                <>
+                  <DropdownMenuItem>
+                    <UserCircleIcon weight="bold" />
+                    Meus dados
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link
+                      to={
+                        session.role === 'DELIVERY' ? '/deliveries' : '/orders'
+                      }
+                    >
+                      <ListIcon weight="bold" />
+                      {session.role === 'DELIVERY'
+                        ? 'Minhas entregas'
+                        : 'Meus pedidos'}
+                    </Link>
+                  </DropdownMenuItem>
+                </>
+              )}
               {session?.role === 'ADMIN' && (
                 <>
                   <DropdownMenuSeparator />

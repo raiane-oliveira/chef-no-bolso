@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu'
+import { Link } from '@tanstack/react-router'
 
 interface HeaderProps extends ComponentProps<'header'> {}
 
@@ -118,24 +119,26 @@ export function Header({ className, ...props }: HeaderProps) {
                   )
                 }}
               </NavLink>
-              <NavLink
-                className={cn(
-                  'w-20',
-                  showTopHeader &&
-                    'text-muted [&.is-active_svg]:shadow-muted [&.is-active]:border-accent-foreground hover:border-muted [&.is-active_svg]:fill-muted',
-                )}
-                to="/orders"
-                activeProps={{ className: 'is-active' }}
-              >
-                {({ isActive }) => {
-                  return (
-                    <>
-                      <ShoppingBagIcon weight={isActive ? 'fill' : 'bold'} />
-                      Pedidos
-                    </>
-                  )
-                }}
-              </NavLink>
+              {session?.role !== 'DELIVERY' && (
+                <NavLink
+                  className={cn(
+                    'w-20',
+                    showTopHeader &&
+                      'text-muted [&.is-active_svg]:shadow-muted [&.is-active]:border-accent-foreground hover:border-muted [&.is-active_svg]:fill-muted',
+                  )}
+                  to="/orders"
+                  activeProps={{ className: 'is-active' }}
+                >
+                  {({ isActive }) => {
+                    return (
+                      <>
+                        <ShoppingBagIcon weight={isActive ? 'fill' : 'bold'} />
+                        Pedidos
+                      </>
+                    )
+                  }}
+                </NavLink>
+              )}
 
               {session ? (
                 <DropdownMenu>
@@ -149,22 +152,41 @@ export function Header({ className, ...props }: HeaderProps) {
                     Minha conta
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
-                    <DropdownMenuItem>
-                      <UserCircleIcon weight="bold" />
-                      Meus dados
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <ListIcon weight="bold" />
-                      Meus pedidos
-                    </DropdownMenuItem>
+                    {session.role !== 'ADMIN' && (
+                      <>
+                        <DropdownMenuItem>
+                          <UserCircleIcon weight="bold" />
+                          Meus dados
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                          <Link
+                            to={
+                              session.role === 'DELIVERY'
+                                ? '/deliveries'
+                                : '/orders'
+                            }
+                          >
+                            <ListIcon weight="bold" />
+                            {session.role === 'DELIVERY'
+                              ? 'Minhas entregas'
+                              : 'Meus pedidos'}
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    )}
                     {session?.role === 'ADMIN' && (
                       <>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem asChild>
-                          <NavLink to="/admin/products">
+                          <Link to="/admin/products">
                             <PackageIcon weight="bold" />
                             Gerenciar produtos
-                          </NavLink>
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Link to="/admin/entregadores">
+                            Gerenciar entregadores
+                          </Link>
                         </DropdownMenuItem>
                       </>
                     )}

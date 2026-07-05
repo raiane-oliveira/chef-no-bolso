@@ -10,14 +10,21 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as OrdersRouteImport } from './routes/orders'
+import { Route as DeliveriesRouteImport } from './routes/deliveries'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthRegisterRouteImport } from './routes/auth/register'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AdminProductsRouteImport } from './routes/admin/products'
+import { Route as AdminEntregadoresRouteImport } from './routes/admin/entregadores'
 
 const OrdersRoute = OrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DeliveriesRoute = DeliveriesRouteImport.update({
+  id: '/deliveries',
+  path: '/deliveries',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -40,17 +47,26 @@ const AdminProductsRoute = AdminProductsRouteImport.update({
   path: '/admin/products',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminEntregadoresRoute = AdminEntregadoresRouteImport.update({
+  id: '/admin/entregadores',
+  path: '/admin/entregadores',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/deliveries': typeof DeliveriesRoute
   '/orders': typeof OrdersRoute
+  '/admin/entregadores': typeof AdminEntregadoresRoute
   '/admin/products': typeof AdminProductsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/deliveries': typeof DeliveriesRoute
   '/orders': typeof OrdersRoute
+  '/admin/entregadores': typeof AdminEntregadoresRoute
   '/admin/products': typeof AdminProductsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -58,7 +74,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/deliveries': typeof DeliveriesRoute
   '/orders': typeof OrdersRoute
+  '/admin/entregadores': typeof AdminEntregadoresRoute
   '/admin/products': typeof AdminProductsRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/register': typeof AuthRegisterRoute
@@ -66,13 +84,28 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/orders' | '/admin/products' | '/auth/login' | '/auth/register'
+    | '/'
+    | '/deliveries'
+    | '/orders'
+    | '/admin/entregadores'
+    | '/admin/products'
+    | '/auth/login'
+    | '/auth/register'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/orders' | '/admin/products' | '/auth/login' | '/auth/register'
+  to:
+    | '/'
+    | '/deliveries'
+    | '/orders'
+    | '/admin/entregadores'
+    | '/admin/products'
+    | '/auth/login'
+    | '/auth/register'
   id:
     | '__root__'
     | '/'
+    | '/deliveries'
     | '/orders'
+    | '/admin/entregadores'
     | '/admin/products'
     | '/auth/login'
     | '/auth/register'
@@ -80,7 +113,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  DeliveriesRoute: typeof DeliveriesRoute
   OrdersRoute: typeof OrdersRoute
+  AdminEntregadoresRoute: typeof AdminEntregadoresRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AuthLoginRoute: typeof AuthLoginRoute
   AuthRegisterRoute: typeof AuthRegisterRoute
@@ -93,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/orders'
       fullPath: '/orders'
       preLoaderRoute: typeof OrdersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deliveries': {
+      id: '/deliveries'
+      path: '/deliveries'
+      fullPath: '/deliveries'
+      preLoaderRoute: typeof DeliveriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -123,12 +165,21 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/entregadores': {
+      id: '/admin/entregadores'
+      path: '/admin/entregadores'
+      fullPath: '/admin/entregadores'
+      preLoaderRoute: typeof AdminEntregadoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  DeliveriesRoute: DeliveriesRoute,
   OrdersRoute: OrdersRoute,
+  AdminEntregadoresRoute: AdminEntregadoresRoute,
   AdminProductsRoute: AdminProductsRoute,
   AuthLoginRoute: AuthLoginRoute,
   AuthRegisterRoute: AuthRegisterRoute,

@@ -1,5 +1,7 @@
 import { useAuthContext } from '@/features/auth/model/authentication-context'
 import { SignInCard } from '@/features/auth/ui/sign-in-card'
+import { env } from '@/shared/config/env'
+import { priceFormatter } from '@/shared/lib/formatters'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import {
@@ -13,9 +15,6 @@ import {
 } from '@/shared/ui/dialog'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { priceFormatter } from '@/shared/lib/formatters'
-import { cn } from '@/shared/lib/utils'
-import { env } from '@/shared/config/env'
 import {
   MagnifyingGlassIcon,
   PencilIcon,
@@ -217,7 +216,9 @@ function RouteComponent() {
       <main className="page-wrap max-md:pb-30 min-h-[calc(100vh-257px)] pt-10">
         <section className="grid gap-4 place-items-center">
           <h1 className="text-2xl font-semibold">Acesso Negado</h1>
-          <p className="text-muted-foreground">Você não tem permissão para acessar esta página.</p>
+          <p className="text-muted-foreground">
+            Você não tem permissão para acessar esta página.
+          </p>
         </section>
       </main>
     )
@@ -229,7 +230,7 @@ function RouteComponent() {
   const filteredProducts = useMemo(() => {
     if (!search.trim()) return products
     return products.filter((product) =>
-      product.name.toLowerCase().includes(search.toLowerCase())
+      product.name.toLowerCase().includes(search.toLowerCase()),
     )
   }, [products, search])
 
@@ -249,119 +250,129 @@ function RouteComponent() {
               />
             </div>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={() => handleOpenDialog()}>
-                <PlusIcon weight="bold" />
-                Adicionar Produto
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
-              <form onSubmit={handleSubmit}>
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingProduct ? 'Editar Produto' : 'Adicionar Produto'}
-                  </DialogTitle>
-                  <DialogDescription>
-                    {editingProduct
-                      ? 'Edite as informações do produto.'
-                      : 'Preencha as informações para adicionar um novo produto.'}
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid gap-2">
-                    <Label htmlFor="name">Nome</Label>
-                    <Input
-                      id="name"
-                      value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
-                      required
-                    />
+              <DialogTrigger asChild>
+                <Button onClick={() => handleOpenDialog()}>
+                  <PlusIcon weight="bold" />
+                  Adicionar Produto
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[500px]">
+                <form onSubmit={handleSubmit}>
+                  <DialogHeader>
+                    <DialogTitle>
+                      {editingProduct ? 'Editar Produto' : 'Adicionar Produto'}
+                    </DialogTitle>
+                    <DialogDescription>
+                      {editingProduct
+                        ? 'Edite as informações do produto.'
+                        : 'Preencha as informações para adicionar um novo produto.'}
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="name">Nome</Label>
+                      <Input
+                        id="name"
+                        value={formData.name}
+                        onChange={(e) =>
+                          setFormData({ ...formData, name: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="description">Descrição</Label>
+                      <Input
+                        id="description"
+                        value={formData.description}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            description: e.target.value,
+                          })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="price">Preço</Label>
+                      <Input
+                        id="price"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        value={formData.price}
+                        onChange={(e) =>
+                          setFormData({ ...formData, price: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="imageUrl">URL da Imagem</Label>
+                      <Input
+                        id="imageUrl"
+                        value={formData.imageUrl}
+                        onChange={(e) =>
+                          setFormData({ ...formData, imageUrl: e.target.value })
+                        }
+                        required
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="category">Categoria</Label>
+                      <select
+                        id="category"
+                        value={formData.categoryId}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            categoryId: e.target.value,
+                          })
+                        }
+                        className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                        required
+                      >
+                        <option value="">Selecione uma categoria</option>
+                        {categories.map((category) => (
+                          <option key={category.id} value={category.id}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="featured"
+                        checked={formData.featured}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            featured: e.target.checked,
+                          })
+                        }
+                        className="h-4 w-4 rounded border-input"
+                      />
+                      <Label htmlFor="featured">Produto em destaque</Label>
+                    </div>
                   </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="description">Descrição</Label>
-                    <Input
-                      id="description"
-                      value={formData.description}
-                      onChange={(e) =>
-                        setFormData({ ...formData, description: e.target.value })
+                  <DialogFooter>
+                    <Button type="button" variant="outline" onClick={resetForm}>
+                      Cancelar
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={
+                        createMutation.isPending || updateMutation.isPending
                       }
-                      required
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="price">Preço</Label>
-                    <Input
-                      id="price"
-                      type="number"
-                      step="0.01"
-                      min="0"
-                      value={formData.price}
-                      onChange={(e) =>
-                        setFormData({ ...formData, price: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="imageUrl">URL da Imagem</Label>
-                    <Input
-                      id="imageUrl"
-                      value={formData.imageUrl}
-                      onChange={(e) =>
-                        setFormData({ ...formData, imageUrl: e.target.value })
-                      }
-                      required
-                    />
-                  </div>
-                  <div className="grid gap-2">
-                    <Label htmlFor="category">Categoria</Label>
-                    <select
-                      id="category"
-                      value={formData.categoryId}
-                      onChange={(e) =>
-                        setFormData({ ...formData, categoryId: e.target.value })
-                      }
-                      className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                      required
                     >
-                      <option value="">Selecione uma categoria</option>
-                      {categories.map((category) => (
-                        <option key={category.id} value={category.id}>
-                          {category.name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="checkbox"
-                      id="featured"
-                      checked={formData.featured}
-                      onChange={(e) =>
-                        setFormData({ ...formData, featured: e.target.checked })
-                      }
-                      className="h-4 w-4 rounded border-input"
-                    />
-                    <Label htmlFor="featured">Produto em destaque</Label>
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={resetForm}
-                  >
-                    Cancelar
-                  </Button>
-                  <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                    {editingProduct ? 'Salvar' : 'Adicionar'}
-                  </Button>
-                </DialogFooter>
-              </form>
-            </DialogContent>
-          </Dialog>
+                      {editingProduct ? 'Salvar' : 'Adicionar'}
+                    </Button>
+                  </DialogFooter>
+                </form>
+              </DialogContent>
+            </Dialog>
           </div>
         </div>
 
@@ -369,7 +380,9 @@ function RouteComponent() {
           <div className="text-center py-10">Carregando produtos...</div>
         ) : filteredProducts.length === 0 ? (
           <div className="text-center py-10 text-muted-foreground">
-            {search ? 'Nenhum produto encontrado para a busca.' : 'Nenhum produto encontrado.'}
+            {search
+              ? 'Nenhum produto encontrado para a busca.'
+              : 'Nenhum produto encontrado.'}
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

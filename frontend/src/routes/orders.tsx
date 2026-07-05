@@ -1,13 +1,13 @@
 import { useAuthContext } from '@/features/auth/model/authentication-context'
 import { SignInCard } from '@/features/auth/ui/sign-in-card'
+import { env } from '@/shared/config/env'
+import { priceFormatter } from '@/shared/lib/formatters'
+import { cn } from '@/shared/lib/utils'
 import { Button } from '@/shared/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui/card'
 import { Input } from '@/shared/ui/input'
 import { Label } from '@/shared/ui/label'
-import { priceFormatter } from '@/shared/lib/formatters'
-import { cn } from '@/shared/lib/utils'
-import { env } from '@/shared/config/env'
-import { CalendarIcon, CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react'
+import { CaretDownIcon, CaretUpIcon } from '@phosphor-icons/react'
 import { useQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
 import { useMemo, useState } from 'react'
@@ -29,7 +29,14 @@ interface Order {
   deliveryFee: number
   subtotal: number
   total: number
-  status: 'pending' | 'confirmed' | 'preparing' | 'ready' | 'delivering' | 'delivered' | 'cancelled'
+  status:
+    | 'pending'
+    | 'confirmed'
+    | 'preparing'
+    | 'ready'
+    | 'delivering'
+    | 'delivered'
+    | 'cancelled'
   coupon?: string
   discount: number
   createdAt: string
@@ -139,7 +146,12 @@ function RouteComponent() {
           {session && (
             <div className="flex items-end gap-3 flex-wrap">
               <div className="grid gap-1.5">
-                <Label htmlFor="startDate" className="text-xs text-muted-foreground">Data inicial</Label>
+                <Label
+                  htmlFor="startDate"
+                  className="text-xs text-muted-foreground"
+                >
+                  Data inicial
+                </Label>
                 <Input
                   id="startDate"
                   type="date"
@@ -149,7 +161,12 @@ function RouteComponent() {
                 />
               </div>
               <div className="grid gap-1.5">
-                <Label htmlFor="endDate" className="text-xs text-muted-foreground">Data final</Label>
+                <Label
+                  htmlFor="endDate"
+                  className="text-xs text-muted-foreground"
+                >
+                  Data final
+                </Label>
                 <Input
                   id="endDate"
                   type="date"
@@ -172,7 +189,9 @@ function RouteComponent() {
             <div className="text-center py-10">Carregando pedidos...</div>
           ) : filteredOrders.length === 0 ? (
             <div className="text-center py-10 text-muted-foreground">
-              {startDate || endDate ? 'Nenhum pedido encontrado para o período selecionado.' : 'Nenhum pedido encontrado.'}
+              {startDate || endDate
+                ? 'Nenhum pedido encontrado para o período selecionado.'
+                : 'Nenhum pedido encontrado.'}
             </div>
           ) : (
             <div className="grid gap-4">
@@ -183,7 +202,12 @@ function RouteComponent() {
                       <div className="flex-1">
                         <CardTitle className="text-lg flex items-center gap-2 flex-wrap">
                           Pedido #{order.id.slice(-6).toUpperCase()}
-                          <span className={cn('text-xs px-2 py-0.5 rounded-full font-medium', statusColors[order.status])}>
+                          <span
+                            className={cn(
+                              'text-xs px-2 py-0.5 rounded-full font-medium',
+                              statusColors[order.status],
+                            )}
+                          >
                             {statusLabels[order.status]}
                           </span>
                         </CardTitle>
@@ -210,8 +234,13 @@ function RouteComponent() {
                     </div>
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mt-2">
                       <span>{deliveryTypeLabels[order.deliveryType]}</span>
-                      <span>{order.items.length} {order.items.length === 1 ? 'item' : 'itens'}</span>
-                      <span className="font-medium text-foreground">{priceFormatter.format(order.total)}</span>
+                      <span>
+                        {order.items.length}{' '}
+                        {order.items.length === 1 ? 'item' : 'itens'}
+                      </span>
+                      <span className="font-medium text-foreground">
+                        {priceFormatter.format(order.total)}
+                      </span>
                     </div>
                   </CardHeader>
                   {expandedOrder === order.id && (
@@ -220,42 +249,63 @@ function RouteComponent() {
                         <h3 className="font-medium">Itens do pedido</h3>
                         <div className="space-y-2">
                           {order.items.map((item, index) => (
-                            <div key={index} className="flex items-center gap-3">
+                            <div
+                              key={index}
+                              className="flex items-center gap-3"
+                            >
                               <div className="w-12 h-12 rounded overflow-hidden shrink-0">
                                 <img
-                                  src={item.product?.imageUrl || 'https://picsum.photos/400/400?random=0'}
+                                  src={
+                                    item.product?.imageUrl ||
+                                    'https://picsum.photos/400/400?random=0'
+                                  }
                                   alt={item.name}
                                   className="w-full h-full object-cover"
                                 />
                               </div>
                               <div className="flex-1">
-                                <p className="text-sm font-medium">{item.name}</p>
+                                <p className="text-sm font-medium">
+                                  {item.name}
+                                </p>
                                 <p className="text-xs text-muted-foreground">
-                                  {item.quantity}x {priceFormatter.format(item.price)}
+                                  {item.quantity}x{' '}
+                                  {priceFormatter.format(item.price)}
                                   {item.observation && ` • ${item.observation}`}
                                 </p>
                               </div>
                               <span className="text-sm font-medium">
-                                {priceFormatter.format(item.price * item.quantity)}
+                                {priceFormatter.format(
+                                  item.price * item.quantity,
+                                )}
                               </span>
                             </div>
                           ))}
                         </div>
                         <div className="border-t pt-3 space-y-1 text-sm">
                           <div className="flex justify-between">
-                            <span className="text-muted-foreground">Subtotal</span>
+                            <span className="text-muted-foreground">
+                              Subtotal
+                            </span>
                             <span>{priceFormatter.format(order.subtotal)}</span>
                           </div>
                           {order.deliveryFee > 0 && (
                             <div className="flex justify-between">
-                              <span className="text-muted-foreground">Taxa de entrega</span>
-                              <span>{priceFormatter.format(order.deliveryFee)}</span>
+                              <span className="text-muted-foreground">
+                                Taxa de entrega
+                              </span>
+                              <span>
+                                {priceFormatter.format(order.deliveryFee)}
+                              </span>
                             </div>
                           )}
                           {order.discount > 0 && (
                             <div className="flex justify-between text-green-600">
-                              <span>Desconto{order.coupon && ` (${order.coupon})`}</span>
-                              <span>-{priceFormatter.format(order.discount)}</span>
+                              <span>
+                                Desconto{order.coupon && ` (${order.coupon})`}
+                              </span>
+                              <span>
+                                -{priceFormatter.format(order.discount)}
+                              </span>
                             </div>
                           )}
                           <div className="flex justify-between font-semibold text-base pt-1">
@@ -265,7 +315,9 @@ function RouteComponent() {
                         </div>
                         {order.deliveryAddress && (
                           <div className="text-sm">
-                            <span className="text-muted-foreground">Endereço: </span>
+                            <span className="text-muted-foreground">
+                              Endereço:{' '}
+                            </span>
                             <span>{order.deliveryAddress}</span>
                           </div>
                         )}
